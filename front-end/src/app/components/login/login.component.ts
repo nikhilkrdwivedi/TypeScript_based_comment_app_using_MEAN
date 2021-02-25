@@ -40,6 +40,13 @@ export class LoginComponent implements OnInit {
     console.log(this.authForm.value)
     this.signInFormErrorText = '';
     if (this.validateFormData()) {
+      let userMetaData = JSON.stringify({
+        isLogin:true,
+        email:this.authForm.value.email
+
+      })
+      sessionStorage.setItem('userMetaData',userMetaData)
+      this._sharedService.navigatePage('/');
       // this._http.signInUser(this.authForm.value).subscribe(res=>{
     //   console.log(res)
     //   localStorage.setItem('access_token',res["access_token"])

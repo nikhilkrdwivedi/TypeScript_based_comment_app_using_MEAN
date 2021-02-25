@@ -11,21 +11,21 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav  ms-auto flex-nowrap" >
-                    <li class="nav-item" title="click to add comment">
-                      <a class="nav-link active" aria-current="page" href="#">Comment</a>
+                    <li class="nav-item" title="click to add comment" (click)="navigatePage('comments')" *ngIf="isLogin">
+                      <a class="nav-link active" aria-current="page" >Comment</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Upload</a>
+                    <li class="nav-item" title="click to upload users"  (click)="navigatePage('user-upload')" *ngIf="isLogin">
+                        <a class="nav-link active" aria-current="page">Upload</a>
                     </li>
-                    <li class="nav-item">
-                      <img class="nav-link" src="../../../assets/img/logoutIcon.svg" style="height: 40px;">
-                    </li>
-                    <li class="nav-item">
-                        <img class="nav-link" src="../../../assets/img/loginIcon.svg" style="height: 40px;">
-                    </li>
-                    <li class="nav-item">
+                    <li class="nav-item" title="click to see profile"  (click)="navigatePage('user-profile')" *ngIf="isLogin">
                         <img class="nav-link" src="../../../assets/img/user.svg" style="height: 40px;">
                     </li>
+                    <li class="nav-item" title="click to login"  (click)="navigatePage('login')" *ngIf="!isLogin">
+                        <img class="nav-link" src="../../../assets/img/loginIcon.svg" style="height: 40px;">
+                    </li>
+                    <li class="nav-item" title="click to logout"  (click)="logout('/')" *ngIf="isLogin">
+                        <img class="nav-link" src="../../../assets/img/logoutIcon.svg" style="height: 40px;">
+                      </li>
                   </ul>
             </div>
         </div>

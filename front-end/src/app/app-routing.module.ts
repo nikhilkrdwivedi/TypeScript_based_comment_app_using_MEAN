@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { UserBulkUploadComponent } from './components/user-bulk-upload/user-bulk-upload.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,11 @@ const routes: Routes = [
   {
     path: 'user-upload',
     component: UserBulkUploadComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'user-profile',
+    component: UserProfileComponent,
     canActivate: [AuthGuard],
   },
   { path: '**', component: NotFoundComponent }
