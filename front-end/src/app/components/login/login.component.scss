@@ -1,0 +1,14 @@
+$warning : #ff6200;
+.container-fluid {
+    background-color: rgb(250, 253, 253);
+    height: 100vh;
+}
+label,input{
+    opacity: 0.7;
+}
+.erroBlock{
+    color: $warning;
+    font-weight: bold;
+    padding: 10px;
+    opacity: 0.7;
+}
