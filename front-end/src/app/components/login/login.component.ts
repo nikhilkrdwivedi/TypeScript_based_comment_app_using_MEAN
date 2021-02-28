@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpCallsService } from 'src/app/http-calls.service';
 import { SharedService } from 'src/app/shared.service';
 @Component({
   selector: 'app-login',
@@ -12,12 +13,19 @@ export class LoginComponent implements OnInit {
   passwordImg: string = 'showPassword.svg';
   passwordStatus: boolean = true;
 
-  constructor(private _sharedService: SharedService, private _fb: FormBuilder) { }
+  constructor(private _sharedService: SharedService, private _fb: FormBuilder,private _httpCallsService:HttpCallsService) { }
   authForm = this._fb.group({
     email: [''],
     password: [''],
   });
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    //if user already login
+    // console.log(JSON.parse((sessionStorage.getItem('userMetaData'))).isLogin)
+    if(sessionStorage.getItem('userMetaData') && JSON.parse((sessionStorage.getItem('userMetaData'))).isLogin){
+    this._sharedService.navigatePage('/');
+    }
+
+  }
 
   navigatePage(endPoint: string) {
     this._sharedService.navigatePage(endPoint);
@@ -45,18 +53,20 @@ export class LoginComponent implements OnInit {
         email:this.authForm.value.email
 
       })
-      sessionStorage.setItem('userMetaData',userMetaData)
+    
+      this._httpCallsService.login(this.authForm.value).subscribe(
+        (res:any)=>{
+      console.log(res)
+      // localStorage.setItem('access_token',res["access_token"])
+      // localStorage.setItem('userCxt',JSON.stringify(res["userCxt"]))
+      res['data'][0]['isLogin']=true;
+      sessionStorage.setItem('userMetaData',JSON.stringify(res['data'][0]))
       this._sharedService.navigatePage('/');
-      // this._http.signInUser(this.authForm.value).subscribe(res=>{
-    //   console.log(res)
-    //   localStorage.setItem('access_token',res["access_token"])
-    //   localStorage.setItem('userCxt',JSON.stringify(res["userCxt"]))
-    //   this._router.navigate([`/`]);
-    // },error=>{
-    //   console.log(error.error)
-    //   this.signInFormErrorText = 'Bad Request. Try Again.';
-    //   return false;
-    // });
+    },error=>{
+      console.log(error.error)
+      this.signInFormErrorText = 'Bad Request. Try Again.';
+      return false;
+    });
     }
   }
   loadImg() {

@@ -22,7 +22,7 @@ export class NavigationComponent implements OnInit {
     this._sharedService.navigatePage(endPoint);
   }
   logout(endPoint){
-    localStorage.removeItem('userMetaData');
+    sessionStorage.removeItem('userMetaData');
     this.isLogin = false;
     this._sharedService.navigatePage(endPoint);
   };

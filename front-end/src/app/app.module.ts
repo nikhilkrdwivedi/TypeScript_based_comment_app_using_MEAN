@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
@@ -13,6 +13,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedService } from './shared.service';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpCallsService } from './http-calls.service';
 
 @NgModule({
   declarations: [
@@ -30,9 +32,11 @@ import { LoaderComponent } from './components/loader/loader.component';
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
-  providers: [SharedService],
+  providers: [SharedService,HttpCallsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
