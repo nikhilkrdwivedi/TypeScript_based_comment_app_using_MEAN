@@ -4,32 +4,26 @@
         <div class="colWithOutPadding colHeight col-sm-12 col-md-12	col-lg-8 col-xl-8 col-xxl-8  border border-2 rounded
         ">
             <div class="commentBoxHeader" style="height: 10%;width: 100%;display: table;">
-                <div style=" display: table-cell;
-                vertical-align: middle;height: 100%;" class="align-middle">
-                <span style="float: left;"> <img src="../../../assets/img/chat.svg" class="img-fluid" style="width: 27px;" title="comment box"> Comment Box </span>
-                <span style="float: right;">
-                    <span style="padding: 3px;
-                    border: 2px solid white;
-                    border-radius: 15px;
-                    font-size: 12px;
-                " title="total comments">{{comments['count']?comments['count']:'NA'}}</span> 
-                    <img  [@rotatedState]='state' src="../../../assets/img/refresh.svg" class="img-fluid" style="width: 27px;margin-left: 15px;" title="click here to refresh if comment not loaded." (click)="getComments();rotate();"></span>    
-            </div>
+                <div style=" display: table-cell;vertical-align: middle;height: 100%;" class="align-middle">
+                    <span style="float: left;"> <img src="../../../assets/img/chat.svg" class="img-fluid" style="width: 27px;" title="comment box"> Comment Box </span>
+                    <span style="float: right;">
+                    <span style="padding: 3px; border: 2px solid white; border-radius: 15px;font-size: 12px;" title="total comments">{{comments['count']?comments['count']:'NA'}}</span>
+                    <img [@rotatedState]='state' src="../../../assets/img/refresh.svg" class="img-fluid" style="width: 27px;margin-left: 15px;" title="click here to refresh if comment not loaded." (click)="getComments();rotate();"></span>
+                </div>
             </div>
             <div class="commentBoxMain" id="style-1" #scrollMe [scrollTop]="scrollMe.scrollHeight" style="height: 80%;">
-                <!-- <h1 *ngFor="let d of ar">{{d.comment}}</h1> -->
                 <div class="container-fluid" style="padding: 0px !important;">
-                    <div class="row" *ngFor="let comment of comments['comments']; let i = index" style="margin: 10px 0px;display: inline-block;width: 100%;" > 
-                        <div class="colWithOutPadding col-sm-12 col-md-12 col-lg-8 col-xl-8 col-xxl-8" [ngClass]="(userMetaData['user_id'] === comment.user_id)?'float-start':'float-end'"style="background-color: antiquewhite;border: 1px solid gray;border-radius: 2px;">
+                    <div class="row" *ngFor="let comment of comments['comments']; let i = index" style="margin: 10px 0px;display: inline-block;width: 100%;">
+                        <div class="colWithOutPadding col-sm-12 col-md-12 col-lg-8 col-xl-8 col-xxl-8" [ngClass]="(userMetaData['user_id'] === comment.user_id)?'float-start':'float-end'" style="background-color: antiquewhite;border: 1px solid gray;border-radius: 2px;">
                             <div style="display: flex;border-bottom: 1px solid gray;padding: 5px;">
-                               <span>
+                                <span>
                                 <img src="../../../assets/img/user.png" style="width: 50px;height: 50px;">
                                </span>
                                 <span>
                                 <span style="display: block;font-size: 14px;">{{comment.full_name?comment.full_name:'NA'}}</span>
                                 <span style="display: block;font-size: 14px;">
                                     <span class="badge rounded-pill bg-success" style="vertical-align: middle;margin-right: 10px;">{{comment.created_at?(comment.created_at  | date:'medium' ):'NA'}}</span>
-                                    <span class="badge rounded-pill bg-danger" style="vertical-align: middle;cursor: pointer;" *ngIf="userMetaData['user_id'] === comment.user_id" (click)="deleteComment(comment.comment_id)">Delete X</span>
+                                <span class="badge rounded-pill bg-danger" style="vertical-align: middle;cursor: pointer;" *ngIf="userMetaData['user_id'] === comment.user_id" (click)="deleteComment(comment.comment_id)">Delete X</span>
                                 </span>
                                 </span>
                             </div>
@@ -37,18 +31,18 @@
                                 <span style="font-size: 14px;">
                                     {{comment.comment?comment.comment:'NA'}}
                                  </span>
-                             </div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="errorBlock text-center">
+                        <span>{{commentErrorText}}</span>
                     </div>
                 </div>
             </div>
             <div class="commentBoxInput" style="height: 10%;display: flex;">
-                <form [formGroup]="commentForm"  style="width: 100%;display: flex;">
-                    <input type="text" class="form-control" id="exampleFormControlInput1"
-                        placeholder="add comment"
-                        style="width: 85%;height: 100%; border-radius:0rem 0rem .25rem .25rem !important;margin-right: 10px;" formControlName="comment">
-                    <button type="button" class="btn"
-                        style="width: 15%;height: 100%;background-color: #0d6efd!important;" (click)="addComment()"><img
+                <form [formGroup]="commentForm" style="width: 100%;display: flex;">
+                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="add comment" style="width: 85%;height: 100%; border-radius:0rem 0rem .25rem .25rem !important;margin-right: 10px;" formControlName="comment">
+                    <button type="button" class="btn" style="width: 15%;height: 100%;background-color: #0d6efd!important;" (click)="addComment()"><img
                             src="../../../assets/img/send1.svg" class="img-fluid"></button>
                 </form>
             </div>

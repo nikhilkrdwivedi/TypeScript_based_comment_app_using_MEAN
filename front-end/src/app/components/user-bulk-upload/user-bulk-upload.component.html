@@ -1,37 +1,43 @@
 <app-navigation></app-navigation>
-<!-- <div class="container-fluid">
+<div class="container-fluid p-3">
     <div class="row align-items-center justify-content-md-center p-1">
-        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 p-4 border border-2 rounded">
-            <div class="text-center">
-                <img src="../../../assets/img/not_found.svg" class="img-fluid">
-                <h3 >Sorry! But this page is not available.</h3>
-                <img src="../../../assets/img/home.svg"  class="rounded-circle" style="background-color: #5d00fd;padding: 10px;border: 2px solid #3c10ff;cursor: pointer;"> 
+        <div class="colWithOutPadding col-sm-12 col-md-12 col-lg-8 col-xl-8 col-xxl-8  border border-2 rounded
+        ">
+            <div class="commentBoxHeader" style="height: 10%;width: 100%;display: table;">
+                <div style=" display: table-cell;
+                vertical-align: middle;height: 100%;" class="align-middle">
+                    <span style="float: left;"> <img src="../../../assets/img/bulkUsers.svg" class="img-fluid"
+                            style="width: 27px;" title="Bulk Upload Users"> Bulk Upload Users</span>
+                    <span style="float: right;">
+                        <a href="../../../assets/file/UserList.xlsx">
+                            <img src="../../../assets/img/download.svg" class="img-fluid"
+                                style="width: 27px;margin-left: 15px;" title="click here to download template file">
+                        </a>
+                    </span>
+                </div>
             </div>
+            <div class="commentBoxMain p-1">
+                <div class="container-fluid">
+                    <form [formGroup]="fileUploadForm" (ngSubmit)="onFormSubmit()">
+                        <div class="row rowWithoutPadding text-center p-1">
+                            <h6 class="text-start colWithPadding marginTopAndBottom">Please download template and upload
+                            </h6>
+                            <div class="errorBlock text-center" [ngClass]="(httpCallStatus)?'successBlockColor':'errorBlockColor'">
+                                <span>{{uploadFormHttpMsgText}}</span>
+                            </div>
+                            <div class="text-start  marginTopAndBottom col-sm-12 col-md-10 col-lg-10 col-xl-10 col-xxl-10">
+                                <div class="custom-file">
+                                    <input class="form-control" type="file" id="formFile" id="customFile" name="myfile" (change)="onFileSelect($event)" #UploadFileInput>
+                                </div>
+                            </div>
+                            <div class="d-grid  marginTopAndBottom col-sm-12 col-md-2 col-lg-2 col-xl-2 col-xxl-2">
+                                <button class="btn btn-primary" type="submit">Upload</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
-</div> -->
-
-<h3>Upload File</h3>
-
-<form [formGroup]="fileUploadForm" (ngSubmit)="onFormSubmit()">
-    <div class="row">
-        <div class="col-sm-12">
-            <div>
-                <h6 class="head-title margin-top-8"><span>UPLOAD</span></h6>
-            </div>
-        </div>
-
-        <div class="col-sm-6 text-center">
-
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="customFile" name="myfile"
-                    (change)="onFileSelect($event)" #UploadFileInput>
-                <label class="custom-file-label" for="customFile">{{fileInputLabel || 'Choose File'}}</label>
-            </div>
-
-        </div>
-        <div class="col-sm-6 text-center">
-            <button class="btn btn-primary" type="submit">Upload</button>
-        </div>
-    </div>
-</form>
+</div>

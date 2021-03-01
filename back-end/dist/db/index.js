@@ -2,12 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const util = require('util');
 const mysql = require('mysql');
+const config_1 = require("../config");
 const pool = mysql.createPool({
-    connectionLimit: 10,
-    host: 'localhost',
-    user: 'root',
-    password: 'Nikhil123.@',
-    database: 'AIFMetrics'
+    connectionLimit: config_1.config.mysql.connectionLimit,
+    host: config_1.config.mysql.host,
+    user: config_1.config.mysql.user,
+    password: config_1.config.mysql.password,
+    database: config_1.config.mysql.database
 });
 // Ping database to check for common exception errors.
 pool.getConnection((err, connection) => {

@@ -8,22 +8,24 @@ import { SharedService } from 'src/app/shared.service';
 })
 export class NavigationComponent implements OnInit {
   isLogin: boolean = false;
+  userMetaData:any={}
   constructor(private _sharedService : SharedService) { }
 
   ngOnInit(): void {
-    let sessionObj = JSON.parse((sessionStorage.getItem('userMetaData')));
-    console.log(sessionObj )
-    if(sessionObj && sessionObj.isLogin){
-    console.log(sessionObj.isLogin)
-    this.isLogin = sessionObj.isLogin
+    this.userMetaData = JSON.parse((sessionStorage.getItem('userMetaData')));
+    console.log(this.userMetaData )
+    if(this.userMetaData && this.userMetaData.isLogin){
+    console.log(this.userMetaData.isLogin)
+    this.isLogin = this.userMetaData.isLogin
     }
   }
   navigatePage(endPoint: string) {
     this._sharedService.navigatePage(endPoint);
   }
-  logout(endPoint){
+  logout(endPoint:string){
     sessionStorage.removeItem('userMetaData');
     this.isLogin = false;
     this._sharedService.navigatePage(endPoint);
+    window.location.reload()
   };
 }

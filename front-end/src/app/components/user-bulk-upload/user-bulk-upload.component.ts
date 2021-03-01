@@ -1,7 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import * as _ from 'lodash';
+import { HttpCallsService } from 'src/app/http-calls.service';
 @Component({
   selector: 'app-user-bulk-upload',
   templateUrl: './user-bulk-upload.component.html',
@@ -17,10 +18,13 @@ export class UserBulkUploadComponent implements OnInit {
   @ViewChild('UploadFileInput', { static: false }) uploadFileInput: ElementRef;
   fileUploadForm: FormGroup;
   fileInputLabel: string;
+  uploadFormHttpMsgText: string;
+  httpCallStatus: boolean
 
   constructor(
     private http: HttpClient,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private _httpCallsService: HttpCallsService
   ) { }
 
   ngOnInit(): void {
@@ -30,6 +34,7 @@ export class UserBulkUploadComponent implements OnInit {
   }
 
   onFileSelect(event) {
+    this.uploadFormHttpMsgText = ''
     let af = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel']
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
@@ -48,26 +53,30 @@ export class UserBulkUploadComponent implements OnInit {
   onFormSubmit() {
 
     if (!this.fileUploadForm.get('myfile').value) {
-      alert('Please fill valid details!');
+      this.httpCallStatus = false
+      this.uploadFormHttpMsgText = 'Please select file first.'
       return false;
     }
 
     const formData = new FormData();
-    formData.append('formFile', this.fileUploadForm.get('myfile').value);
-    formData.append('agentId', '007');
-
-
-    this.http
-      .post<any>('http://localhost:3000/upload', formData).subscribe(response => {
-        console.log(response);
-        if (response.statusCode === 200) {
-          // Reset the file input
-          this.uploadFileInput.nativeElement.value = "";
-          this.fileInputLabel = undefined;
-        }
-      }, error => {
-        console.log(error);
-      });
+    formData.append('UserList', this.fileUploadForm.get('myfile').value);
+    this._httpCallsService.bulkUserUpload(formData).subscribe((res: HttpResponse<any>) => {
+      console.log(res, ' = ', res.status);
+      if (res.status === 200) {
+        // Reset the file input
+        this.httpCallStatus = true
+        this.uploadFormHttpMsgText = 'Successfully uploaded'
+        this.uploadFileInput.nativeElement.value = "";
+        this.fileInputLabel = undefined;
+        this.fileUploadForm.reset();
+      }
+    }, error => {
+      this.uploadFileInput.nativeElement.value = "";
+      this.fileInputLabel = undefined;
+      console.log(error);
+      this.uploadFormHttpMsgText = error.error.errorMsg
+      this.httpCallStatus = false
+    });
   }
 
 }

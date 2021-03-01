@@ -21,52 +21,39 @@ function postComment(req, res) {
             const { comment } = req.body;
             const userId = req.header('user_id');
             if (!comment && !comment.length) {
-                return res.status(400).json({
-                    errorMsg: "comment is missing",
-                    data: []
-                });
+                return res.status(400).json({ errorMsg: "comment is missing" });
             }
             try {
-                console.log(`INSERT INTO comments (user_id, comment,comment_id)
-            VALUES (${userId},${comment},${uuid_1.v4()});`);
-                const resComment = yield db_1.default.query(`INSERT INTO comments (user_id, comment,comment_id)
-            VALUES ('${userId}','${comment}','${uuid_1.v4()}');`);
-                console.log('comments ', resComment);
-                return res.status(200).json({
-                    successMsg: "comment addedd",
-                    data: [resComment]
-                });
+                const resComment = yield db_1.default.query(`INSERT INTO comments (user_id, comment,comment_id) VALUES ('${userId}','${comment}','${uuid_1.v4()}');`);
+                return res.status(200).json({ successMsg: "comment addedd" });
             }
             catch (error) {
-                return res.status(400).json({
-                    errorMsg: "comment has not posted",
-                    data: []
-                });
+                return res.status(400).json({ errorMsg: "comment has not posted" });
             }
         }
         catch (error) {
-            return res.status(500).json({
-                errorMsg: "Internal Server Error !!!",
-                data: []
-            });
+            return res.status(500).json({ errorMsg: "Internal Server Error !!!" });
         }
     });
 }
 exports.postComment = postComment;
 function getComments(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        // const data = await TestModel.find({})
-        console.log('okaa');
-        const data = yield db_1.default.query(`SELECT comments.user_id, comments.comment, comments.comment_id ,comments.created_at,user.user_email,CONCAT(user.first_name , ' ' , user.last_name) AS full_name
-    FROM comments
-    INNER JOIN user ON comments.user_id=user.user_id ORDER BY comments.created_at;`);
-        return res.status(200).json({
-            successMsg: "returning list containing count and comments",
-            data: [{
-                    comments: data,
-                    count: data.length
-                }]
-        });
+        try {
+            const data = yield db_1.default.query(`SELECT comments.user_id, comments.comment, comments.comment_id ,comments.created_at,user.user_email,
+         CONCAT(user.first_name , ' ' , user.last_name) AS full_name
+         FROM comments INNER JOIN user ON comments.user_id=user.user_id ORDER BY comments.created_at;`);
+            return res.status(200).json({
+                successMsg: "returning list containing count and comments",
+                data: [{
+                        comments: data,
+                        count: data.length
+                    }]
+            });
+        }
+        catch (error) {
+            return res.status(500).json({ errorMsg: "Internal Server Error" });
+        }
     });
 }
 exports.getComments = getComments;
@@ -76,31 +63,18 @@ function deleteComment(req, res) {
             const { commentId } = req.params;
             const userId = req.header('user_id');
             if (!commentId && !commentId.length) {
-                return res.status(400).json({
-                    errorMsg: "comment_id is missing",
-                    data: []
-                });
+                return res.status(400).json({ errorMsg: "comment_id is missing" });
             }
             try {
                 const resComment = yield db_1.default.query(`DELETE FROM comments where comment_id  = '${commentId}' and user_id  = '${userId}';`);
-                console.log('comments ', resComment);
-                return res.status(200).json({
-                    successMsg: "comment deleted",
-                    data: [resComment]
-                });
+                return res.status(200).json({ successMsg: "comment deleted", data: [resComment] });
             }
             catch (error) {
-                return res.status(400).json({
-                    errorMsg: "comment has not deleted",
-                    data: []
-                });
+                return res.status(400).json({ errorMsg: "comment has not deleted" });
             }
         }
         catch (error) {
-            return res.status(500).json({
-                errorMsg: "Internal Server Error !!!",
-                data: []
-            });
+            return res.status(500).json({ errorMsg: "Internal Server Error !!!" });
         }
     });
 }

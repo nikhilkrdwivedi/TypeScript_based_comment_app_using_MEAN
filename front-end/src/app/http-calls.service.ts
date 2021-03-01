@@ -5,14 +5,12 @@ import {environment} from 'src/environments/environment.prod'
   providedIn: 'root'
 })
 export class HttpCallsService {
-  baseUrl: string = '';
-  userMetaData:any={}
-  constructor(public _http: HttpClient) {
-    this.baseUrl =  environment.baseUrl
-    this.userMetaData = JSON.parse(sessionStorage.getItem('userMetaData'))
-   }
-  getHeader(){
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' ,'user_id':this.userMetaData.user_id});
+  private baseUrl =  environment.baseUrl
+  private userMetaData = JSON.parse(sessionStorage.getItem('userMetaData'))
+ 
+  constructor(public _http: HttpClient) {}
+  getHeader(userId:string){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' ,'user_id':userId});
     return {headers}
  }
   login(ob:any){
@@ -21,10 +19,13 @@ export class HttpCallsService {
   getComments(){
     return this._http.get(`${this.baseUrl}/api/v1/comments`);
   }
-  postComment(ob:any){
-   return this._http.post(`${this.baseUrl}/api/v1/comments`,ob,this.getHeader())
+  postComment(ob:any,userId:string){
+   return this._http.post(`${this.baseUrl}/api/v1/comments`,ob,this.getHeader(userId));
   }
-  deleteComment(commentId:string){
-    return this._http.delete(`${this.baseUrl}/api/v1/comments/${commentId}`,this.getHeader())
+  deleteComment(commentId:string,userId:string){
+    return this._http.delete(`${this.baseUrl}/api/v1/comments/${commentId}`,this.getHeader(userId));
+  }
+  bulkUserUpload(formData:any){
+    return this._http.post(`${this.baseUrl}/api/v1/userUpload`, formData,{ observe: 'response'});
   }
 }

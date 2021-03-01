@@ -21,67 +21,46 @@ function login(req, res) {
             const { email, password } = req.body;
             const { error } = yield utility_1.default.loginValidation(req.body);
             if (error) {
-                return res.status(400).json({
-                    errorMsg: error.details[0].message,
-                    successMsg: "",
-                    data: []
-                });
+                return res.status(400).json({ errorMsg: error.details[0].message });
             }
             try {
                 const user = yield db_1.default.query(`SELECT * from user where user_email = '${email}';`);
                 if (user && user.length) {
                     if (email === user[0].user_email && password === user[0].password) {
                         user[0].password = undefined;
-                        return res.status(200).json({
-                            errorMsg: "",
-                            successMsg: "successfully login",
-                            data: user
-                        });
+                        return res.status(200).json({ successMsg: "successfully login", data: user });
                     }
                     else {
-                        return res.status(400).json({
-                            errorMsg: "email/password is not matching",
-                            successMsg: "",
-                            data: []
-                        });
+                        return res.status(400).json({ errorMsg: "email/password is not matching" });
                     }
                 }
                 else {
-                    return res.status(200).json({
-                        errorMsg: "user not found",
-                        successMsg: "",
-                        data: []
-                    });
+                    return res.status(400).json({ errorMsg: "user not found" });
                 }
             }
             catch (error) {
-                console.log('err ', error.sqlMessage);
-                return res.status(400).json({
-                    errorMsg: error.sqlMessage,
-                    data: []
-                });
+                return res.status(400).json({ errorMsg: error.sqlMessage });
             }
         }
         catch (error) {
-            return res.status(500).json({
-                errorMsg: "Internal Server Error",
-                successMsg: "",
-                data: []
-            });
+            return res.status(500).json({ errorMsg: "Internal Server Error" });
         }
     });
 }
 exports.login = login;
 function getComments(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        // const data = await TestModel.find({})
-        console.log('okaa');
-        const data = yield db_1.default.query('SELECT * FROM user_blogs');
-        return res.status(200).json({
-            message: "This is sample api testing data.",
-            count: data.length,
-            data: data
-        });
+        try {
+            const data = yield db_1.default.query('SELECT * FROM user_blogs');
+            return res.status(200).json({
+                successMsg: "This is sample api testing data.",
+                count: data.length,
+                data: data
+            });
+        }
+        catch (error) {
+            res.status(500).json({ errorMsg: "Internal server error" });
+        }
     });
 }
 exports.getComments = getComments;

@@ -12,20 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-//VALIDATION 
 const joi_1 = __importDefault(require("@hapi/joi"));
 const db_1 = __importDefault(require("../db"));
-//Register validaion
-const registerValidation = (data) => __awaiter(void 0, void 0, void 0, function* () {
-    const schema = joi_1.default.object({
-        firstName: joi_1.default.string().min(2).required(),
-        lastName: joi_1.default.string().min(2).required(),
-        email: joi_1.default.string().min(6).required().email(),
-        password: joi_1.default.string().min(4).required(),
-        contact: joi_1.default.string().max(10).min(10).required()
-    });
-    return schema.validate(data);
-});
 //login validation
 const loginValidation = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const schema = joi_1.default.object({
@@ -34,22 +22,11 @@ const loginValidation = (data) => __awaiter(void 0, void 0, void 0, function* ()
     });
     return schema.validate(data);
 });
-// module.exports.registerValidation = registerValidation
-// module.exports.loginValidation = loginValidation
+//id user exists 
 const verifyRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    // console.log("req.header",req);
     const userId = req.header('user_id');
-    // console.log("token", token)
     if (!userId)
         return res.status(401).json({ errorMsg: "Access Denied", data: [] });
-    // try {
-    //     const verified = verify(token, process.env.TOKEN_SECRET);
-    //     req.userCxt = verified.userCxt;
-    //     console.log("req.Cxt: ", req.userCxt)
-    //     return next();
-    // } catch (error) {
-    //     res.status(400).send('Invalid Token!!');
-    // }
     try {
         const user = yield db_1.default.query(`SELECT user_id from user where user_id = '${userId}';`);
         if (user && user.length) {
@@ -57,27 +34,15 @@ const verifyRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, func
                 next();
             }
             else {
-                return res.status(400).json({
-                    errorMsg: "user_id is missing/wrong",
-                    successMsg: "",
-                    data: []
-                });
+                return res.status(400).json({ errorMsg: "user_id is missing/wrong" });
             }
         }
         else {
-            return res.status(400).json({
-                errorMsg: "bad request",
-                successMsg: "",
-                data: []
-            });
+            return res.status(400).json({ errorMsg: "you can't perform this action" });
         }
     }
     catch (error) {
-        console.log('err ', error.sqlMessage);
-        return res.status(400).json({
-            errorMsg: error.sqlMessage,
-            data: []
-        });
+        return res.status(400).json({ errorMsg: error.sqlMessage });
     }
 });
-exports.default = { registerValidation, loginValidation, verifyRequest };
+exports.default = { loginValidation, verifyRequest };

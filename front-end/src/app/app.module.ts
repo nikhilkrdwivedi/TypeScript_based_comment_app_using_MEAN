@@ -11,8 +11,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedService } from './shared.service';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
-import { LoaderComponent } from './components/loader/loader.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpCallsService } from './http-calls.service';
 
@@ -25,8 +23,6 @@ import { HttpCallsService } from './http-calls.service';
     CommentWindowComponent,
     NotFoundComponent,
     LoginComponent,
-    UserProfileComponent,
-    LoaderComponent
   ],
   imports: [
     BrowserModule,

@@ -18,6 +18,7 @@ import {trigger, state, style, animate, transition} from '@angular/animations';
 export class CommentWindowComponent implements OnInit {
 
   constructor(private _fb: FormBuilder,private _httpCallsService:HttpCallsService) { }
+
   commentForm = this._fb.group({
     comment: [null],
   });
@@ -26,11 +27,15 @@ export class CommentWindowComponent implements OnInit {
   ar:any[]=[]
   state: string = 'default';
   userMetaData:any={}
+  commentErrorText:string=''
+
   ngOnInit(): void {
     this.userMetaData = JSON.parse(sessionStorage.getItem('userMetaData'))
     this.getComments()
   }
+
   addComment(){
+    this.commentErrorText = '';
     console.log('this.commentForm ',this.commentForm.value)
     this.ar.push(this.commentForm.value.comment);
     if(this.commentForm.value.comment){
@@ -38,28 +43,32 @@ export class CommentWindowComponent implements OnInit {
       'comment':this.commentForm.value.comment,
       }
       this.commentForm.reset();
-      this._httpCallsService.postComment(commentObj).subscribe((res:any)=>{
+      this._httpCallsService.postComment(commentObj,this.userMetaData.user_id).subscribe((res:any)=>{
         console.log('res  : ',res)
         this.getComments()
       },err=>{
-        console.log('err ',err)
+        this.commentErrorText = err.error.errorMsg;
       })
     }
   }
+
   getComments(){
+    this.commentErrorText = '';
     this._httpCallsService.getComments().subscribe((res:any)=>{
       this.comments = res['data'][0]
       console.log(this.comments)
     },err=>{
-
+      this.commentErrorText = err.error.errorMsg;
     })
   }
+
   deleteComment(commentId){
-    this._httpCallsService.deleteComment(commentId).subscribe((res:any)=>{
+    this.commentErrorText = '';
+    this._httpCallsService.deleteComment(commentId,this.userMetaData.user_id).subscribe((res:any)=>{
       console.log(res)
       this.getComments()
     },err=>{
-
+      this.commentErrorText = err.error.errorMsg;
     })
   }
   rotate(){

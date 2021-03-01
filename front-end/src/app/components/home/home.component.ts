@@ -9,18 +9,10 @@ import { SharedService } from 'src/app/shared.service';
 })
 export class HomeComponent implements OnInit {
   showLoader: boolean = true;
-  constructor(private _sharedService : SharedService,private _httpCallsService:HttpCallsService) { }
+  constructor(private _sharedService: SharedService, private _httpCallsService: HttpCallsService) { }
 
-  ngOnInit(): void {
-    this._httpCallsService.login({
-      email:'nikhil@gmail.com',
-      password:'djcvchvdj'
-    }).subscribe((res:any)=>{
-      console.log('res ',res)
-    },err=>{
-      console.log(err)
-    })
-  }
+  ngOnInit(): void { }
+  
   navigatePage(endPoint: string) {
     this._sharedService.navigatePage(endPoint);
   }
