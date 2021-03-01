@@ -53,7 +53,7 @@ Following setup required to make sure project up and run:
     ```
 - Go to `back-end/src/config` and open `index.ts`
 - Now, configure port and database as per your machine settings.
-- Next, from root dir `(directory where package.json exists)` run following commandsas per requirements
+- Next, from root dir `(directory where package.json exists)` run following commands as per requirements
     ```sh
     $ npm run dev
     This command start server at port 3000 using typescript files
