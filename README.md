@@ -1,6 +1,6 @@
-# AIF Metrics Assignment
+# Comment App Using MEAN [M->MYSQL] with TypeScript
 ##### _Developer : Nikhil Kumar_
-This is an assignment given by AIF Metrics. This repository contains following folders/file. 
+This repository contains following folders/file. 
   - Back-end
   - Front-end
   - Postman-collection
